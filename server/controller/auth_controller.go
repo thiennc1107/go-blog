@@ -1,11 +1,17 @@
 package controller
 
 import (
+	"strconv"
+	"time"
+
+	"github.com/dgrijalva/jwt-go/v4"
 	"github.com/gofiber/fiber/v2"
 	"github.com/thiennc1107/go-react/databases"
 	"github.com/thiennc1107/go-react/models"
 	"golang.org/x/crypto/bcrypt"
 )
+
+const SecretKey = "secret"
 
 func Register(c *fiber.Ctx) error {
 	var user models.User
@@ -43,11 +49,27 @@ func Login(c *fiber.Ctx) error {
 			"message": "User not found",
 		})
 	}
+
 	if err := bcrypt.CompareHashAndPassword(user.Password, data.Password); err != nil {
 		c.Status(fiber.StatusUnauthorized)
 		return c.JSON(fiber.Map{
 			"message": "Wrong password",
 		})
 	}
-	return c.Status(204).Send(nil)
+
+	t := time.Now().Add(time.Hour * 25).Unix()
+
+	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+		Issuer:    strconv.Itoa(user.Id),
+		ExpiresAt: jwt.NewTime(float64(t)),
+	})
+
+	token, err := claims.SignedString([]byte(SecretKey))
+	if err != nil {
+		c.Status(fiber.StatusInternalServerError)
+		return err
+	}
+	return c.Status(fiber.StatusAccepted).JSON(fiber.Map{
+		"token": token,
+	})
 }
