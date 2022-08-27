@@ -4,8 +4,8 @@ networks:
   net: {}
 
 services:
-
   db:
+    container_name: db
     #    build: "."
     image: mysql:latest
     command:
