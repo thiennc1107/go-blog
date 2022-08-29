@@ -11,7 +11,7 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-	conn, err := gorm.Open(mysql.Open("root:1234@tcp(localhost:3309)/go_react"), &gorm.Config{})
+	conn, err := gorm.Open(mysql.Open("root:1234@tcp(localhost:3309)/go_react?parseTime=true"), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal("Unable to connect database" + err.Error())
