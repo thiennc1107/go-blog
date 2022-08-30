@@ -1,8 +1,11 @@
 package databases
 
 import (
+	"fmt"
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/thiennc1107/go-react/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -11,7 +14,10 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-	conn, err := gorm.Open(mysql.Open("root:1234@tcp(localhost:3309)/go_react?parseTime=true"), &gorm.Config{})
+	godotenv.Load(".env")
+	url := os.Getenv("DB_URL")
+	dns := fmt.Sprintf("root:1234@tcp(%s)/go_react?parseTime=true", url)
+	conn, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal("Unable to connect database" + err.Error())
