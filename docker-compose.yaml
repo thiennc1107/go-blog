@@ -1,19 +1,19 @@
 version: "3"
 
-networks:
-  net: {}
-
 services:
-  db:
-    container_name: db
-    #    build: "."
-    image: mysql:latest
-    command:
-      - "--default-authentication-plugin=mysql_native_password"
-    ports:
-      - "3309:3306"
+  go-server:
+    container_name: go-server
+    build: "./server"
+    expose:
+      - "8000"
     environment:
-      MYSQL_ROOT_PASSWORD: mypw
-      MYSQL_ROOT_HOST: "%"
-    volumes:
-      - "./mysql/database:/var/lib/mysql"
+      DB_URL: host.docker.internal:3309
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  nginx:
+    container_name: react-nginx
+    build: "."
+    ports:
+      - "80:80"
+    depends_on:
+      - "go-server"

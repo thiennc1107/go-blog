@@ -6,6 +6,7 @@ import NavBar from './components/nav-bar'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './pages/home'
 import Register from './pages/register'
+import getUrl from './utils/url'
 
 function App() {
   const [name, setName] = useState('');
@@ -13,7 +14,7 @@ function App() {
   useEffect(() => {
     (
       async () => {
-      	const res = await fetch('http://localhost:8000/api/user',{
+      	const res = await fetch(`${getUrl()}/user`,{
           headers: {
             'Content-Type': 'application/json',
           },
