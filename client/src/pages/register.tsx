@@ -1,5 +1,6 @@
 import React, { SyntheticEvent, useState } from "react";
 import { Navigate } from "react-router-dom";
+import getUrl from "../utils/url";
 
 export default function Register() {
 
@@ -11,7 +12,7 @@ export default function Register() {
 
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault()
-    await fetch('http://localhost:8000/api/register',{
+    await fetch(`${getUrl()}/register`,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

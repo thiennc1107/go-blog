@@ -1,5 +1,6 @@
 import React, { SyntheticEvent, useState } from "react";
 import { Navigate } from "react-router-dom";
+import getUrl from "../utils/url";
 
 
 export default function Login({setName}: { setName: (name: string) => void}) {
@@ -9,7 +10,7 @@ export default function Login({setName}: { setName: (name: string) => void}) {
 
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault()
-    const response = await fetch('http://localhost:8000/api/login',{
+    const response = await fetch(`${getUrl()}/login`,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

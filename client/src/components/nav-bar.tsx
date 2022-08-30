@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import getUrl from "../utils/url";
 
 export default function NavBar ({name, setName}: { name: string, setName: (name: string) => void }) {
   const logout = async () => {
-    await fetch('http://localhost:8000/api/logout',{
+    await fetch(`${getUrl()}/logout`,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
